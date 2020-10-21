@@ -1319,61 +1319,6 @@ F 3 "~" H 5550 4100 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x01 J29
-U 1 1 5F970474
-P 4950 6800
-F 0 "J29" V 4914 6712 50  0000 R CNN
-F 1 "D22" V 4823 6712 50  0000 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4950 6800 50  0001 C CNN
-F 3 "~" H 4950 6800 50  0001 C CNN
-	1    4950 6800
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x01 J30
-U 1 1 5F9715E8
-P 4950 7100
-F 0 "J30" V 4914 7012 50  0000 R CNN
-F 1 "D20" V 4823 7012 50  0000 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4950 7100 50  0001 C CNN
-F 3 "~" H 4950 7100 50  0001 C CNN
-	1    4950 7100
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x01 J31
-U 1 1 5F97EC06
-P 4600 7250
-F 0 "J31" V 4472 7330 50  0000 L CNN
-F 1 "D6" V 4563 7330 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4600 7250 50  0001 C CNN
-F 3 "~" H 4600 7250 50  0001 C CNN
-	1    4600 7250
-	0    1    1    0   
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x01 J32
-U 1 1 5F97FE73
-P 4600 6600
-F 0 "J32" V 4472 6680 50  0000 L CNN
-F 1 "D8" V 4563 6680 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4600 6600 50  0001 C CNN
-F 3 "~" H 4600 6600 50  0001 C CNN
-	1    4600 6600
-	0    1    1    0   
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x01 J33
-U 1 1 5F980CD6
-P 4600 6950
-F 0 "J33" V 4472 7030 50  0000 L CNN
-F 1 "D7" V 4563 7030 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4600 6950 50  0001 C CNN
-F 3 "~" H 4600 6950 50  0001 C CNN
-	1    4600 6950
-	0    1    1    0   
-$EndComp
-$Comp
 L Connector_Generic:Conn_01x01 J34
 U 1 1 5F981ACB
 P 3500 6850

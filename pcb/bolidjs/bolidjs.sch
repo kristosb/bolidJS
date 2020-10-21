@@ -1800,4 +1800,6 @@ Wire Bus Line
 	5900 1350 5900 3600
 Wire Bus Line
 	4100 2000 4100 3600
+Text Notes 10950 4750 1    50   ~ 0
+* duplicate pads for different motor sizes
 $EndSCHEMATC
