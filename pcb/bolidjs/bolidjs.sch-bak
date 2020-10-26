@@ -1424,12 +1424,12 @@ Wire Wire Line
 	9750 5300 9750 5150
 Connection ~ 9750 5150
 Wire Wire Line
-	7700 5950 8250 5950
+	7700 5950 7800 5950
 Wire Wire Line
 	8250 6050 8250 5950
 Connection ~ 8250 5950
 Wire Wire Line
-	8250 5950 8900 5950
+	8250 5950 8800 5950
 Wire Wire Line
 	8000 6050 8000 5550
 Wire Wire Line
@@ -1786,6 +1786,274 @@ Wire Wire Line
 	1350 5450 1700 5450
 Text Notes 3800 7400 1    50   ~ 0
 bumper wire solder points
+Text Notes 10950 4750 1    50   ~ 0
+* duplicate pads for different motor sizes
+$Comp
+L Connector_Generic:Conn_01x01 J30
+U 1 1 6053A1A8
+P 7500 6250
+F 0 "J30" H 7418 6025 50  0000 C CNN
+F 1 "FL" H 7418 6116 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 7500 6250 50  0001 C CNN
+F 3 "~" H 7500 6250 50  0001 C CNN
+	1    7500 6250
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J31
+U 1 1 6053B260
+P 9100 6200
+F 0 "J31" H 9180 6242 50  0000 L CNN
+F 1 "FR" H 9180 6151 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 9100 6200 50  0001 C CNN
+F 3 "~" H 9100 6200 50  0001 C CNN
+	1    9100 6200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J32
+U 1 1 6053B8E2
+P 4300 6650
+F 0 "J32" H 4250 6750 50  0000 C CNN
+F 1 "FL" H 4218 6516 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4300 6650 50  0001 C CNN
+F 3 "~" H 4300 6650 50  0001 C CNN
+	1    4300 6650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J40
+U 1 1 6053C348
+P 4550 6650
+F 0 "J40" H 4500 6750 50  0000 C CNN
+F 1 "FL" H 4468 6516 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4550 6650 50  0001 C CNN
+F 3 "~" H 4550 6650 50  0001 C CNN
+	1    4550 6650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J37
+U 1 1 6053C531
+P 4900 6650
+F 0 "J37" H 4900 6750 50  0000 C CNN
+F 1 "FL" H 4818 6516 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4900 6650 50  0001 C CNN
+F 3 "~" H 4900 6650 50  0001 C CNN
+	1    4900 6650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J39
+U 1 1 6053C951
+P 5150 6650
+F 0 "J39" H 5150 6750 50  0000 C CNN
+F 1 "FL" H 5068 6516 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 5150 6650 50  0001 C CNN
+F 3 "~" H 5150 6650 50  0001 C CNN
+	1    5150 6650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J33
+U 1 1 6053CB3F
+P 4300 7300
+F 0 "J33" H 4200 7200 50  0000 C CNN
+F 1 "FL" H 4218 7166 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4300 7300 50  0001 C CNN
+F 3 "~" H 4300 7300 50  0001 C CNN
+	1    4300 7300
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J41
+U 1 1 6053D4DD
+P 4550 7300
+F 0 "J41" H 4450 7200 50  0000 C CNN
+F 1 "FL" H 4468 7166 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4550 7300 50  0001 C CNN
+F 3 "~" H 4550 7300 50  0001 C CNN
+	1    4550 7300
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J42
+U 1 1 6053D990
+P 4900 7300
+F 0 "J42" H 4800 7200 50  0000 C CNN
+F 1 "FL" H 4818 7166 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4900 7300 50  0001 C CNN
+F 3 "~" H 4900 7300 50  0001 C CNN
+	1    4900 7300
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J38
+U 1 1 6053DDC3
+P 5150 7300
+F 0 "J38" H 5050 7200 50  0000 C CNN
+F 1 "FL" H 5068 7166 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 5150 7300 50  0001 C CNN
+F 3 "~" H 5150 7300 50  0001 C CNN
+	1    5150 7300
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	7700 6250 7800 6250
+Wire Wire Line
+	7800 6250 7800 5950
+Connection ~ 7800 5950
+Wire Wire Line
+	7800 5950 8250 5950
+Wire Wire Line
+	8900 6200 8800 6200
+Wire Wire Line
+	8800 6200 8800 5950
+Connection ~ 8800 5950
+Wire Wire Line
+	8800 5950 8900 5950
+Wire Wire Line
+	4300 7100 4300 6850
+Wire Wire Line
+	4550 7100 4550 6850
+Wire Wire Line
+	4900 7100 4900 6850
+Wire Wire Line
+	5150 7100 5150 6850
+Text Notes 5600 7550 2    50   ~ 0
+motor pads 
+$Comp
+L Connector_Generic:Conn_01x01 J54
+U 1 1 605C95CF
+P 4550 6350
+F 0 "J54" H 4500 6450 50  0000 C CNN
+F 1 "FL" H 4468 6216 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4550 6350 50  0001 C CNN
+F 3 "~" H 4550 6350 50  0001 C CNN
+	1    4550 6350
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J43
+U 1 1 605C993C
+P 5150 6350
+F 0 "J43" H 5150 6450 50  0000 C CNN
+F 1 "FL" H 5068 6216 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 5150 6350 50  0001 C CNN
+F 3 "~" H 5150 6350 50  0001 C CNN
+	1    5150 6350
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4550 6550 4650 6550
+Wire Wire Line
+	4650 6550 4650 6850
+Wire Wire Line
+	4650 6850 4550 6850
+Connection ~ 4550 6850
+Wire Wire Line
+	5150 6550 5250 6550
+Wire Wire Line
+	5250 6850 5150 6850
+Wire Wire Line
+	5250 6550 5250 6850
+Connection ~ 5150 6850
+$Comp
+L Connector_Generic:Conn_01x01 J45
+U 1 1 606066AF
+P 5550 6650
+F 0 "J45" H 5500 6750 50  0000 C CNN
+F 1 "FL" H 5468 6516 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 5550 6650 50  0001 C CNN
+F 3 "~" H 5550 6650 50  0001 C CNN
+	1    5550 6650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J47
+U 1 1 606066B9
+P 5800 6650
+F 0 "J47" H 5750 6750 50  0000 C CNN
+F 1 "FL" H 5718 6516 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 5800 6650 50  0001 C CNN
+F 3 "~" H 5800 6650 50  0001 C CNN
+	1    5800 6650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J50
+U 1 1 606066C3
+P 6150 6650
+F 0 "J50" H 6150 6750 50  0000 C CNN
+F 1 "FL" H 6068 6516 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 6150 6650 50  0001 C CNN
+F 3 "~" H 6150 6650 50  0001 C CNN
+	1    6150 6650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J52
+U 1 1 606066CD
+P 6400 6650
+F 0 "J52" H 6400 6750 50  0000 C CNN
+F 1 "FL" H 6318 6516 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 6400 6650 50  0001 C CNN
+F 3 "~" H 6400 6650 50  0001 C CNN
+	1    6400 6650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J44
+U 1 1 606066D7
+P 5550 7300
+F 0 "J44" H 5450 7200 50  0000 C CNN
+F 1 "FL" H 5468 7166 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 5550 7300 50  0001 C CNN
+F 3 "~" H 5550 7300 50  0001 C CNN
+	1    5550 7300
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J46
+U 1 1 606066E1
+P 5800 7300
+F 0 "J46" H 5700 7200 50  0000 C CNN
+F 1 "FL" H 5718 7166 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 5800 7300 50  0001 C CNN
+F 3 "~" H 5800 7300 50  0001 C CNN
+	1    5800 7300
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J49
+U 1 1 606066EB
+P 6150 7300
+F 0 "J49" H 6050 7200 50  0000 C CNN
+F 1 "FL" H 6068 7166 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 6150 7300 50  0001 C CNN
+F 3 "~" H 6150 7300 50  0001 C CNN
+	1    6150 7300
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5550 7100 5550 6850
+Wire Wire Line
+	5800 7100 5800 6850
+Wire Wire Line
+	6150 7100 6150 6850
+$Comp
+L Connector_Generic:Conn_01x01 J53
+U 1 1 6060670E
+P 6400 7300
+F 0 "J53" H 6400 7400 50  0000 C CNN
+F 1 "FL" H 6318 7166 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 6400 7300 50  0001 C CNN
+F 3 "~" H 6400 7300 50  0001 C CNN
+	1    6400 7300
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6400 7100 6400 6850
 Wire Bus Line
 	5150 1350 5900 1350
 Wire Bus Line
@@ -1800,4 +2068,28 @@ Wire Bus Line
 	5900 1350 5900 3600
 Wire Bus Line
 	4100 2000 4100 3600
+$Comp
+L Connector_Generic:Conn_01x01 J56
+U 1 1 606FF4F9
+P 5650 5750
+F 0 "J56" H 5650 5850 50  0000 C CNN
+F 1 "FL" H 5568 5616 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 5650 5750 50  0001 C CNN
+F 3 "~" H 5650 5750 50  0001 C CNN
+	1    5650 5750
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 J55
+U 1 1 60701EDE
+P 6300 5750
+F 0 "J55" H 6300 5850 50  0000 C CNN
+F 1 "FL" H 6218 5616 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 6300 5750 50  0001 C CNN
+F 3 "~" H 6300 5750 50  0001 C CNN
+	1    6300 5750
+	1    0    0    -1  
+$EndComp
+Text Notes 6200 5600 2    50   ~ 0
+end point bar
 $EndSCHEMATC
