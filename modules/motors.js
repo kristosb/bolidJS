@@ -22,7 +22,7 @@ function motors(pins) {
   this.decay = decay;
   this.decmode = decay.FAST;
   this.frequency = 20;
-  console.log("motor initialized");
+  //console.log("motor initialized");
 }
 motors.prototype.decayModeSet = function (dec)
 {
@@ -40,10 +40,10 @@ motors.prototype.motorConfig = function ()
 
 motors.prototype.dcMotorControl = function ( dir, speed)
 {
-  console.log(dir);	
+  //console.log(dir);	
   var pinorder = pinSwap(dir, this.pins, this.decmode)
   var pwm = Math.abs(speed - this.decmode);
-  console.log(pwm);
+  //console.log(pwm);
   analogWrite(pinorder.pin1, this.decmode, {freq:this.frequency});
   analogWrite(pinorder.pin2, pwm, {freq:this.frequency} );
 }

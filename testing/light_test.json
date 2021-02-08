@@ -1,0 +1,29 @@
+{
+  "imageUrl": "",
+  "testMode": "Form",
+  "frequency": "1",
+  "activePoll": false,
+  "testDescription": "lights testing",
+  "testProject": "lights",
+  "debug": false,
+  "dataPoints": [
+    {
+      "label": "aval",
+      "expression": "a",
+      "type": "number",
+      "points": []
+    }
+  ],
+  "actionPoints": [
+    {
+      "label": "front",
+      "expression": "toggle_front",
+      "type": "number"
+    },
+    {
+      "label": "back",
+      "expression": "toggle_rear",
+      "type": "number"
+    }
+  ]
+}
