@@ -6,6 +6,9 @@ pinMode(D4, 'output');
 pinMode(D5, 'output');
 pinMode(D11, 'output');
 pinMode(D6, 'output');
+pinMode(D29, 'input_pullup');
+pinMode(D31, 'input_pullup');
+
 var motor = new StepperMotor({
   pins:[D6,D3,D11,D4],
   pattern :  [0b0011,0b0110,0b1100,0b1001]  // high torque full
@@ -36,7 +39,50 @@ var toggleLights = function(){
 
 motor.setHome();
 motor.timerSet(0.01);
-motor.posUpdate(100);
+var steeringSpan = 0;
+var steeringCalMax = 500;
+var spanComplete = false;
+var spanMiddle =0;
+function steeringCalibrate(){
+  steeringSpan =0;
+  motor.posUpdate(steeringCalMax);
+  var leftEnd = setWatch(function(e) {
+    console.log("Button 29 pressed");
+    steeringSpan = motor.getPosition();
+    motor.posUpdate(-steeringCalMax);
+    console.log(steeringSpan);
+  }, D29, { repeat: false, edge: 'falling', debounce: 1 });
+
+  var rightEnd = setWatch(function(e) {
+    console.log("Button 31 pressed");
+    steeringSpan =steeringSpan - motor.getPosition();
+    console.log(motor.getPosition());
+    console.log(steeringSpan);
+    spanMiddle = Math.floor(motor.getPosition() + steeringSpan/2);
+    console.log(spanMiddle);
+    motor.posUpdate(spanMiddle);
+    spanComplete = true;
+  }, D31, { repeat: false, edge: 'falling', debounce: 1 });
+  
+  var finished = function calibFinished(){
+    if(spanComplete){
+        console.log('span complete');
+        console.log(motor.getPosition());
+        if (motor.getPosition() == spanMiddle ){
+          motor.setHome();
+          spanMiddle = 0;
+          //clearWatch(leftEnd);
+          //clearWatch(rightEnd);
+          console.log('cal complete');
+          console.log(motor.getPosition());
+          spanComplete = false;
+        }
+    }
+  };
+  setInterval(finished, 500);
+}
+
+//motor.posUpdate(100);
 function move(){
   console.log(motor.getPosition());
   if(motor.getPosition() >= 0)
@@ -48,9 +94,9 @@ function move(){
 //motor.posUpdate(100);
 //setTimeout(move,2000);
 //setTimeout(move,6000);
-setInterval(move,3000);
+//setInterval(move,3000);
 console.log("test");
-
+steeringCalibrate();
 //setTimeout(move(100),10); setTimeout(move(-100),1000);
 //motor.posUpdate(10);
 /*function swap() {

@@ -1,12 +1,17 @@
-mot = require("motors").connect({pin1: D18,pin2: D19},0);
+motRear = require("motors").connect({pin1: D18,pin2: D19},0);
 motFront = require("motors").connect({pin1: D26,pin2: D27},0);
 var StepperMotor = require("StepperMotorContinous");
-
+pinMode(D3, 'output');
+pinMode(D4, 'output');
+pinMode(D11, 'output');
+pinMode(D6, 'output');
+pinMode(D29, 'input_pullup');
+pinMode(D31, 'input_pullup');
 var motor = new StepperMotor({
   pins:[D6,D3,D11,D4],
   pattern :  [0b0011,0b0110,0b1100,0b1001],  // high torque full
   //stepsPerSec: 500
-  offpattern : 0b1111
+  //offpattern : 0b1111
 });
 
 var head_lights = [D25,D28];
@@ -28,9 +33,7 @@ function getBatteryLevel() {
   val = 6.52*val + 0.11;
   FuelLevel = (val- 3.3)*180;//210
   FuelLevel = Math.floor(E.clip(FuelLevel, 0, 255));
-  //console.log(FuelLevel);
 }
-
 //setup pins driving lights
 pinMode(head_lights[0], 'output');
 pinMode(head_lights[1], 'output');
@@ -39,7 +42,7 @@ pinMode(rear_lights[1], 'output');
 
 motor.setHome();
 motor.timerSet(0.1);
-mot.motorConfig();
+motRear.motorConfig();
 motFront.motorConfig();
 var zeroPos = motor.getPosition();
 //mot.dcMotorControl(mot.dir.FWD,0.05);
@@ -49,8 +52,8 @@ function bolidControl(event){
   event.data[1] ? lightsOn(head_lights) : lightsOff(head_lights);
   //acceleration
   if (event.data[4] <= 255 && event.data[4]>=0){
-    mot.dcMotorControl(mot.dir.FWD,event.data[4]/255);
-    motFront.dcMotorControl(mot.dir.FWD,event.data[4]/255);
+    motRear.dcMotorControl(motRear.dir.FWD,event.data[4]/255);
+    motFront.dcMotorControl(motFront.dir.FWD,event.data[4]/255);
   }
   //steering
   if (event.data[5] <= 255 && event.data[5]>=0){
@@ -62,6 +65,13 @@ function bolidControl(event){
 }
 setInterval(getBatteryLevel,1000);
 getBatteryLevel();
+setWatch(function(e) {
+  console.log("Button 29 pressed");
+}, D29, { repeat: true, edge: 'falling', debounce: 3 });
+
+setWatch(function(e) {
+  console.log("Button 31 pressed");
+}, D31, { repeat: true, edge: 'falling', debounce: 3 });
 
 NRF.setServices({
   0xBCDE : {
