@@ -1,15 +1,17 @@
 motRear = require("motors").connect({pin1: D18,pin2: D19},0);
 motFront = require("motors").connect({pin1: D26,pin2: D27},0);
 var StepperMotor = require("StepperMotorContinous");
-pinMode(D3, 'output');
+/*pinMode(D3, 'output');
 pinMode(D4, 'output');
 pinMode(D11, 'output');
 pinMode(D6, 'output');
 pinMode(D29, 'input_pullup');
-pinMode(D31, 'input_pullup');
+pinMode(D31, 'input_pullup');*/
 var motor = new StepperMotor({
   pins:[D6,D3,D11,D4],
   pattern :  [0b0011,0b0110,0b1100,0b1001],  // high torque full
+  endStopLeft : D29,
+  endStopRight : D31
   //stepsPerSec: 500
   //offpattern : 0b1111
 });
@@ -34,6 +36,20 @@ function getBatteryLevel() {
   FuelLevel = (val- 3.3)*180;//210
   FuelLevel = Math.floor(E.clip(FuelLevel, 0, 255));
 }
+var span = {
+  max: undefined,
+  min: undefined,
+  middle: function(){
+    return Math.floor((this.min == undefined || this.max ==undefined) ? 0 : ((this.max - this.min)/2)-this.max);
+  },
+  reset: function(){
+    this.min = undefined;
+    this.max = undefined;
+  },
+  done: function(){
+    return (this.min != undefined && this.max !=undefined);
+  }
+};
 //setup pins driving lights
 pinMode(head_lights[0], 'output');
 pinMode(head_lights[1], 'output');
@@ -41,11 +57,26 @@ pinMode(rear_lights[0], 'output');
 pinMode(rear_lights[1], 'output');
 
 motor.setHome();
-motor.timerSet(0.1);
+motor.timerSet(0.01);
 motRear.motorConfig();
 motFront.motorConfig();
-var zeroPos = motor.getPosition();
-//mot.dcMotorControl(mot.dir.FWD,0.05);
+//var zeroPos = motor.getPosition();
+/* home position calibration on limit events */
+motor.on('limit', val => {
+  //console.log('limit');
+  //console.log(val);   
+  if (val>0) 
+    span.max = val;
+  else 
+    span.min = val;
+  if(span.done()) {
+    motor.pos = motor.pos + span.middle(); 
+    motor.posUpdate(motor.pos); 
+    //console.log(span.middle());
+    span.reset();
+    //console.log('done');
+  }
+});
 
 function bolidControl(event){
   //headlights
@@ -57,21 +88,12 @@ function bolidControl(event){
   }
   //steering
   if (event.data[5] <= 255 && event.data[5]>=0){
-    var position = zeroPos +((event.data[5]-127)*2);
+    var position = ((event.data[5]-127)*2)+ event.data[2]-127;
     motor.posUpdate(position);
-    //motor.stop(true);
-    //motor.moveTo(position ,true);
   }
 }
 setInterval(getBatteryLevel,1000);
 getBatteryLevel();
-setWatch(function(e) {
-  console.log("Button 29 pressed");
-}, D29, { repeat: true, edge: 'falling', debounce: 3 });
-
-setWatch(function(e) {
-  console.log("Button 31 pressed");
-}, D31, { repeat: true, edge: 'falling', debounce: 3 });
 
 NRF.setServices({
   0xBCDE : {

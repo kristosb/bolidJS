@@ -33,7 +33,7 @@ var testLights = function(){
   toggle_rear ?  lightsOn(rear_lights) : lightsOff(rear_lights);
   return;
 };
-
+/*
 //setInterval(testLights, 200);
 NRF.setServices({
   0xBCDE : {
@@ -45,4 +45,4 @@ NRF.setServices({
       }
     }
   }
-},{ advertise: [ 'BCDE' ] });
+},{ advertise: [ 'BCDE' ] });*/

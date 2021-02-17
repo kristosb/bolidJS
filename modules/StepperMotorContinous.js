@@ -10,6 +10,18 @@ function StepperMotor(obj) {
   this.onstep = obj.onstep || 0;
   this.newPos = 0;
   this.interval = undefined;
+  this.idle = false;
+  this.msg = 'idle';
+  this.endStopLeft = obj.endStopLeft;
+  this.endStopRight = obj.endStopRight;
+  pinMode(this.endStopLeft, 'input_pullup');
+  pinMode(this.endStopRight, 'input_pullup');
+  pinMode(this.pins[0], 'output');
+  pinMode(this.pins[1], 'output');
+  pinMode(this.pins[2], 'output');
+  pinMode(this.pins[3], 'output');
+  //this.leftEnd = undefined;
+  //this.rightEnd = undefined;
 }
 
 
@@ -65,23 +77,47 @@ StepperMotor.prototype.moveTo = function(pos, milliseconds, callback, turnOff) {
       setTimeout(callback, milliseconds);
   }
 };
+////////////////////////
+/*
+StepperMotor.prototype.endStopSetup = function() {
+  this.leftEnd = setWatch(function(e) {
+    
+  }, this.endStopLeft , { repeat: true, edge: 'falling', debounce: 1 });
+  this.rightEnd = undefined;
+};*/
 StepperMotor.prototype.posUpdate = function(pos) {
   this.newPos = 0|pos; // to int
 };
+/*set up timer checking for new position*/
 StepperMotor.prototype.timerSet = function(milliseconds) {
   var stepper = this;
-    var step = function() {
-      // stop
-      if (stepper.pos == stepper.newPos) {
+  var step = function() {
+    // stop
+    if (stepper.pos == stepper.newPos) {
+      if (!stepper.idle){ 
         digitalWrite(stepper.pins, stepper.offpattern);
-      } else {
-        // move onwards
-        stepper.pos += ( stepper.newPos < stepper.pos) ? -1 : 1;
-        // now do step
-        digitalWrite(stepper.pins, stepper.pattern[ stepper.pos & (stepper.pattern.length-1) ]);
+        stepper.emit(stepper.msg, stepper.pos);
+        stepper.msg = 'idle';
       }
-    };
-    this.interval = setInterval(step, milliseconds);
+      stepper.idle = true;
+    } else {
+      // move onwards
+      var step = ( stepper.newPos < stepper.pos) ? -digitalRead(stepper.endStopRight) : digitalRead(stepper.endStopLeft); //+1, -1 or 0 if any end points toggled
+      stepper.pos += step;
+      // now do step
+      digitalWrite(stepper.pins, stepper.pattern[ stepper.pos & (stepper.pattern.length-1) ]);
+      stepper.idle = false;
+      if(!step) {
+        stepper.newPos = stepper.pos;
+        stepper.msg = 'limit';
+      }
+    }
+  };
+  this.interval = setInterval(step, milliseconds);
 };
-
+/** Set the current position to be home (0) */
+StepperMotor.prototype.setZero = function() {
+  this.newPos =0;
+  this.pos = 0;
+};
 exports = StepperMotor;

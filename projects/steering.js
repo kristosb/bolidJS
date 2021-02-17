@@ -1,17 +1,19 @@
 var StepperMotor = require("StepperMotorContinous");
 
 //pinMode(D25, 'input_pullup');
-pinMode(D3, 'output');
+/*pinMode(D3, 'output');
 pinMode(D4, 'output');
 pinMode(D5, 'output');
 pinMode(D11, 'output');
 pinMode(D6, 'output');
 pinMode(D29, 'input_pullup');
-pinMode(D31, 'input_pullup');
+pinMode(D31, 'input_pullup');*/
 
 var motor = new StepperMotor({
   pins:[D6,D3,D11,D4],
-  pattern :  [0b0011,0b0110,0b1100,0b1001]  // high torque full
+  pattern :  [0b0011,0b0110,0b1100,0b1001],  // high torque full
+  endStopLeft : D29,
+  endStopRight : D31
   //pins:[D5,D11,D4,D3], //different config for full wave
   //pattern :  [0b0001,0b0010,0b0100,0b1000] //org wave
   //pattern :  [0b1001,0b0101,0b0110,0b1010]  // high torque full
@@ -40,47 +42,45 @@ var toggleLights = function(){
 motor.setHome();
 motor.timerSet(0.01);
 var steeringSpan = 0;
-var steeringCalMax = 500;
-var spanComplete = false;
+var steeringCalMax = 800;
 var spanMiddle =0;
-function steeringCalibrate(){
+var calOffset = 20;
+//var callCheck;
+/*function steeringCalibrate(){
   steeringSpan =0;
+  motor.setZero();
   motor.posUpdate(steeringCalMax);
   var leftEnd = setWatch(function(e) {
-    console.log("Button 29 pressed");
     steeringSpan = motor.getPosition();
     motor.posUpdate(-steeringCalMax);
+    console.log("Button 29 pressed");
     console.log(steeringSpan);
-  }, D29, { repeat: false, edge: 'falling', debounce: 1 });
+  }, D29, { repeat: false, edge: 'falling' });
 
-  var rightEnd = setWatch(function(e) {
-    console.log("Button 31 pressed");
+  var rightEnd = setWatch(function(e) {  
     steeringSpan =steeringSpan - motor.getPosition();
+    spanMiddle = Math.floor(motor.getPosition() + steeringSpan/2);
+    motor.posUpdate(spanMiddle+calOffset);
+    console.log("Button 31 pressed");
     console.log(motor.getPosition());
     console.log(steeringSpan);
-    spanMiddle = Math.floor(motor.getPosition() + steeringSpan/2);
     console.log(spanMiddle);
-    motor.posUpdate(spanMiddle);
-    spanComplete = true;
-  }, D31, { repeat: false, edge: 'falling', debounce: 1 });
+    motor.emit('finished','done');
+  }, D31, { repeat: false, edge: 'falling' });
   
-  var finished = function calibFinished(){
-    if(spanComplete){
-        console.log('span complete');
-        console.log(motor.getPosition());
-        if (motor.getPosition() == spanMiddle ){
-          motor.setHome();
-          spanMiddle = 0;
-          //clearWatch(leftEnd);
-          //clearWatch(rightEnd);
-          console.log('cal complete');
-          console.log(motor.getPosition());
-          spanComplete = false;
-        }
-    }
-  };
-  setInterval(finished, 500);
-}
+  motor.on('finished', val => { console.log(val);
+                                //clearWatch(leftEnd);
+                                //clearWatch(rightEnd);
+                                 motor.removeAllListeners('finished');
+                              });
+  motor.on('idle', val => {
+    console.log(val);   
+    motor.setZero();
+    console.log('calibration finished'); 
+    motor.removeAllListeners('idle');
+                               });
+
+}*/
 
 //motor.posUpdate(100);
 function move(){
@@ -96,7 +96,45 @@ function move(){
 //setTimeout(move,6000);
 //setInterval(move,3000);
 console.log("test");
-steeringCalibrate();
+
+var span = {
+  max: undefined,
+  min: undefined,
+  middle: function(){
+    return Math.floor((this.min == undefined || this.max ==undefined) ? 0 : ((this.max - this.min)/2)-this.max);
+  },
+  reset: function(){
+    this.min = undefined;
+    this.max = undefined;
+  },
+  done: function(){
+    return (this.min != undefined && this.max !=undefined);
+  }
+};
+
+motor.on('idle', val => {
+  console.log('idle');
+  console.log(val);   
+  console.log(span.middle());
+  //motor.removeAllListeners('idle');
+    });
+motor.on('limit', val => {
+  console.log('limit');
+  console.log(val);   
+  if (val>0) 
+    span.max = val;
+  else 
+    span.min = val;
+  if(span.done()) {
+    motor.pos = motor.pos + span.middle(); 
+    motor.posUpdate(motor.pos); 
+    console.log(span.middle());
+    span.reset();
+    console.log('done');
+  }
+    });
+//motor.posUpdate(steeringCalMax);
+//steeringCalibrate();
 //setTimeout(move(100),10); setTimeout(move(-100),1000);
 //motor.posUpdate(10);
 /*function swap() {
@@ -130,3 +168,20 @@ function swap_on_down() {
         },true);
       }
       , 5000);*/
+
+  /*var finished = function calibFinished(){
+    if(spanComplete){
+        console.log('span complete');
+        console.log(motor.getPosition());
+        if (motor.getPosition() == spanMiddle ){
+          motor.setHome();
+          spanMiddle = 0;
+          //clearWatch(leftEnd);
+          //clearWatch(rightEnd);
+          console.log('cal complete');
+          console.log(motor.getPosition());
+          spanComplete = false;
+        }
+    }
+  };*/
+  //callCheck = setInterval(finished, 500);
