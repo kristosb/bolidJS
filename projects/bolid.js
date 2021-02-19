@@ -80,7 +80,9 @@ motor.on('limit', val => {
 
 function bolidControl(event){
   //headlights
-  event.data[1] ? lightsOn(head_lights) : lightsOff(head_lights);
+  if(event.data[1]&0x01) lightsOn(head_lights); else lightsOff(head_lights);
+  //break
+  if(event.data[1]&0x02) lightsOn(rear_lights); else lightsOff(rear_lights);
   //acceleration
   if (event.data[4] <= 255 && event.data[4]>=0){
     motRear.dcMotorControl(motRear.dir.FWD,event.data[4]/255);
