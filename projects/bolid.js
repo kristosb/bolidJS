@@ -59,7 +59,9 @@ pinMode(rear_lights[1], 'output');
 motor.setHome();
 motor.timerSet(0.01);
 motRear.motorConfig();
+motRear.decayModeSet(motRear.decay.COAST);
 motFront.motorConfig();
+motFront.decayModeSet(motRear.decay.COAST);
 //var zeroPos = motor.getPosition();
 /* home position calibration on limit events */
 motor.on('limit', val => {
@@ -79,20 +81,46 @@ motor.on('limit', val => {
 });
 
 function bolidControl(event){
+  var direction = motRear.dir.FWD;
+  var speed =0;
   //headlights
   if(event.data[1]&0x01) lightsOn(head_lights); else lightsOff(head_lights);
   //break
-  if(event.data[1]&0x02) lightsOn(rear_lights); else lightsOff(rear_lights);
+  if(event.data[1]&0x02){
+    motRear.decayModeSet(motRear.decay.FAST);
+    motFront.decayModeSet(motRear.decay.FAST);
+    lightsOn(rear_lights); 
+  }
+  else {
+    motRear.decayModeSet(motRear.decay.COAST);
+    motFront.decayModeSet(motRear.decay.COAST);
+    lightsOff(rear_lights);
+  }
+    
+  switch(event.data[3]) {
+        case 0:
+            speed = 0;
+            break;
+        case 1:
+            speed = event.data[4]/255;
+            direction = motRear.dir.BKW;
+            break;
+        case 2:
+            speed = event.data[4]/255;
+            direction = motRear.dir.FWD;
+            break;
+        default:
+  }
   //acceleration
-  if (event.data[4] <= 255 && event.data[4]>=0){
-    motRear.dcMotorControl(motRear.dir.FWD,event.data[4]/255);
-    motFront.dcMotorControl(motFront.dir.FWD,event.data[4]/255);
-  }
+    //if (event.data[4] <= 255 && event.data[4]>=0){
+  motRear.dcMotorControl(direction, speed);
+  motFront.dcMotorControl(direction,speed);
+    //}
   //steering
-  if (event.data[5] <= 255 && event.data[5]>=0){
-    var position = ((event.data[5]-127)*2)+ event.data[2]-127;
-    motor.posUpdate(position);
-  }
+  //if (event.data[5] <= 255 && event.data[5]>=0){
+  var position = ((event.data[5]-127)*3)+ event.data[2]-127;
+  motor.posUpdate(position);
+  //}
 }
 setInterval(getBatteryLevel,1000);
 getBatteryLevel();

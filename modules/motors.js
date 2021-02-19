@@ -7,8 +7,8 @@ BKW: 1
 
 const decay = 
 {
-FAST: 0,
-COAST: 1
+FAST: 1,
+COAST: 0
 }
 
 function pinSwap(dir, pins, decmode)
