@@ -1,12 +1,14 @@
-motRear = require("motors").connect({pin1: D18,pin2: D19},0);
-motFront = require("motors").connect({pin1: D26,pin2: D27},0);
+var motRear = require("motors").connect({pin1: D18,pin2: D19},0);
+var motFront = require("motors").connect({pin1: D26,pin2: D27},0);
 var StepperMotor = require("StepperMotorContinous");
-/*pinMode(D3, 'output');
-pinMode(D4, 'output');
-pinMode(D11, 'output');
-pinMode(D6, 'output');
-pinMode(D29, 'input_pullup');
-pinMode(D31, 'input_pullup');*/
+
+motRear.motorConfig();
+motRear.decayModeSet(motRear.decay.COAST);
+motFront.motorConfig();
+motFront.decayModeSet(motRear.decay.COAST);
+motRear.dcMotorControl(motRear.dir.FWD, 0);
+motFront.dcMotorControl(motRear.dir.FWD,0);
+
 var motor = new StepperMotor({
   pins:[D6,D3,D11,D4],
   pattern :  [0b0011,0b0110,0b1100,0b1001],  // high torque full
@@ -16,8 +18,10 @@ var motor = new StepperMotor({
   //offpattern : 0b1111
 });
 
-var head_lights = [D25,D28];
-var rear_lights = [D16,D17];
+var headLights = [D25,D28];
+var rearLights = [D16,D17];
+var heartBeat = 0;
+var heartBeatPrevious = 0;
 
 function lightsOn(lights){ 
   digitalWrite(lights,0b11);
@@ -51,17 +55,14 @@ var span = {
   }
 };
 //setup pins driving lights
-pinMode(head_lights[0], 'output');
-pinMode(head_lights[1], 'output');
-pinMode(rear_lights[0], 'output');
-pinMode(rear_lights[1], 'output');
+pinMode(headLights[0], 'output');
+pinMode(headLights[1], 'output');
+pinMode(rearLights[0], 'output');
+pinMode(rearLights[1], 'output');
 
 motor.setHome();
 motor.timerSet(0.01);
-motRear.motorConfig();
-motRear.decayModeSet(motRear.decay.COAST);
-motFront.motorConfig();
-motFront.decayModeSet(motRear.decay.COAST);
+
 //var zeroPos = motor.getPosition();
 /* home position calibration on limit events */
 motor.on('limit', val => {
@@ -79,24 +80,41 @@ motor.on('limit', val => {
     //console.log('done');
   }
 });
+function toggleLights(){
+  //if(state) lightsOn(headLights); else lightsOff(headLights);
+  //state = !state;
+  lightsOn(headLights);
+  setTimeout(function () {
+    lightsOff(headLights);
+  }, 50);
+  return;
+}
+function checkHeartbeat(){
+  if (heartBeat == heartBeatPrevious){
+    motRear.dcMotorControl(motRear.dir.FWD, 0);
+    motFront.dcMotorControl(motRear.dir.FWD,0);
+    toggleLights();
+  }
+  heartBeatPrevious = heartBeat;
+}
 
 function bolidControl(event){
   var direction = motRear.dir.FWD;
   var speed =0;
   //headlights
-  if(event.data[1]&0x01) lightsOn(head_lights); else lightsOff(head_lights);
+  if(event.data[1]&0x01) lightsOn(headLights); else lightsOff(headLights);
   //break
   if(event.data[1]&0x02){
     motRear.decayModeSet(motRear.decay.FAST);
     motFront.decayModeSet(motRear.decay.FAST);
-    lightsOn(rear_lights); 
+    lightsOn(rearLights); 
   }
   else {
     motRear.decayModeSet(motRear.decay.COAST);
     motFront.decayModeSet(motRear.decay.COAST);
-    lightsOff(rear_lights);
+    lightsOff(rearLights);
   }
-    
+  // gear and break check  
   switch(event.data[3]) {
         case 0:
             speed = 0;
@@ -120,10 +138,11 @@ function bolidControl(event){
   //if (event.data[5] <= 255 && event.data[5]>=0){
   var position = ((event.data[5]-127)*3)+ event.data[2]-127;
   motor.posUpdate(position);
+  //heartbeat
+  heartBeatPrevious = heartBeat;
+  heartBeat = event.data[0];
   //}
 }
-setInterval(getBatteryLevel,1000);
-getBatteryLevel();
 
 NRF.setServices({
   0xBCDE : {
@@ -150,5 +169,8 @@ NRF.updateServices({
   }
 });
 }
+getBatteryLevel();
+setInterval( checkHeartbeat, 500);
+setInterval(getBatteryLevel,1000);
 setInterval( bolidRdUpdate, 1000);
 

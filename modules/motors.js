@@ -22,7 +22,10 @@ function motors(pins) {
   this.decay = decay;
   this.decmode = decay.FAST;
   this.frequency = 20;
-  //console.log("motor initialized");
+  pinMode(this.pins.pin1, 'analog');
+  pinMode(this.pins.pin2, 'analog');
+  analogWrite(this.pins.pin1, 0);
+  analogWrite(this.pins.pin2, 0);
 }
 motors.prototype.decayModeSet = function (dec)
 {
